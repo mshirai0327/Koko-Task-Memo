@@ -1,4 +1,4 @@
-# きえもの — 消える ToDo アプリ 設計・引き継ぎ仕様書
+# Koko-Task
 
 > **v0.1 PROTOTYPE** / フロントのみ / 個人利用
 
@@ -154,28 +154,37 @@ const STORAGE_KEY = 'kiemono_tasks_v1';
 
 ## 6. 次フェーズ候補
 
-### Phase A: PWA化（コスト: 低）
+> 詳細は [docs/](docs/README.md) を参照
 
-- `manifest.json` + service worker 追加
-- スマホのホーム画面にインストール可能
-- オフライン動作
-- デバイス間同期は依然なし
+### Phase A: PWA 完成（コスト: 1時間）
 
-### Phase B: 軽量バックエンド + デバイス間同期（コスト: 低〜中）
+- ✅ manifest.webmanifest 実装済み
+- ✅ sw.js (Service Worker) 実装済み
+- ❌ PNG アイコン未追加（iOS のホーム画面アイコンに必要）
+- → `docs/phases/phase-a-pwa.md` を参照
+
+### Phase B: マルチデバイス同期（コスト: $0/月）
 
 | 項目 | 内容 |
 |------|------|
-| フロント | React + Vite（既存デザイン踏襲） |
-| バックエンド | Cloudflare Workers + KV（ほぼ無料） |
-| 認証 | 匿名セッション（UUIDクッキー）または Magic Link |
-| 同期 | WebSocket or polling |
-| TTL管理 | KVのexpiration機能で自動削除も可能 |
+| バックエンド | Cloudflare Workers + KV（無料枠で十分） |
+| 認証 | 匿名セッション（UUID syncId）— ログイン不要 |
+| デバイスペアリング | 6文字コード + QRコード（メール不要） |
+| 同期方式 | B.1: ポーリング30秒（無料） → B.2: WebSocket（$5/月〜） |
+| TTL管理 | KV の `expirationTtl: 259200`（72h）で自動削除 |
 
-### Phase C: ネイティブアプリ展開（コスト: 中）
+→ `docs/phases/phase-b-sync.md` を参照
 
-- Tauri（Rust製ランタイム）でWeb→デスクトップアプリ化
-- Capacitor でモバイルアプリ（iOS/Android）化
-- WebのコードをほぼそのままReuse可能
+### Phase C: ネイティブアプリ展開（コスト: 低）
+
+| プラットフォーム | 技術 | 理由 |
+|---|---|---|
+| デスクトップ (Win/Mac/Linux) | **Tauri 2.x** | 軽量・公式 GitHub Action でクロスビルド自動化 |
+| モバイル (iOS/Android) | **Capacitor 6** | 実績豊富・プラグイン成熟・Vanilla JS/React 対応 |
+| ブラウザ | PWA | そのまま継続 |
+
+※ Tauri でモバイルをやらない: 2024年10月 GA でまだ Capacitor より未成熟  
+→ `docs/phases/phase-c-native.md` を参照
 
 ### Phase D: 軽量ソーシャル機能（将来構想）
 
@@ -196,12 +205,14 @@ const STORAGE_KEY = 'kiemono_tasks_v1';
 
 ### TODO / 改善候補
 
-- [ ] Enterキーでの日本語入力確定時の誤送信対策（`isComposing` チェック）
+- [x] Enterキーでの日本語入力確定時の誤送信対策（`isComposing` チェック） ← 実装済み
+- [x] PWA化: manifest.webmanifest + sw.js ← 実装済み
+- [ ] PNG アイコン追加（iOS ホーム画面用）
+- [ ] ライトテーマ対応（クリーム系カラー、`prefers-color-scheme` 対応）
+- [ ] マルチデバイス同期 UI（syncId コード表示モーダル）
 - [ ] タスクの並び替え（ドラッグ&ドロップ）
-- [ ] タスク数が増えた時の仮想スクロール検討
-- [ ] ライトテーマ対応
-- [ ] PWA化: manifest.json, service worker
 - [ ] アクセシビリティ: aria属性, フォーカス管理
+- [ ] タスク数が増えた時の仮想スクロール検討
 
 ---
 
@@ -240,9 +251,26 @@ A: PWA化（manifest + service worker）
 B: Cloudflare Workers + KV でデバイス間同期
 C: Tauri / Capacitor でネイティブアプリ化
 
-今回お願いしたいこと: [ここに具体的な作業を書く]
-```
 
----
+■ 追加要件メモ（整理済み）
 
-*きえもの — 軽くてよい。忘れてもよい。*
+1. **マルチデバイス同期が最重要**
+   - SNS/チーム機能は不要。同一人物の複数デバイス間だけ同期したい
+   - 認証は極力シンプルに（ログイン画面を作りたくない）
+   - → 匿名セッション（UUID syncId）でコード入力/QRコードでペアリングする方針で決定
+
+2. **スマホアプリ対応（将来）**
+   - PWA で「ホームに追加」が当面の最短経路
+   - 将来はネイティブアプリとして配布したい
+   - → Capacitor (mobile) + Tauri (desktop) の方針で決定
+
+3. **UIはもう少し明るく・目に優しく**
+   - 現在のダークテーマに加えてライトテーマ（クリーム系）を追加したい
+   - OS の `prefers-color-scheme` に自動追従 + 手動切り替えも
+
+4. **軽量・シンプルを維持**
+   - イラスト・アニメーションは自分で書く
+   - AIには「アーキテクチャ・実装・ドキュメント」を頼む
+
+5. **ドキュメントをちゃんと残す**
+   - → `docs/` ディレクトリに整備済み
