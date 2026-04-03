@@ -1,10 +1,14 @@
 # Koko-Task
 
-`Koko-Task` は、72時間で消える個人用 ToDo アプリの静的フロントです。  
-このリポジトリでは Docker / nginx の配信基盤だけを整えています。アプリ本体が入ると、そのまま静的ホスティングできます。
+`Koko-Task` は、72時間で消える個人用 ToDo アプリです。  
+依存なしの静的フロントとして実装し、`nginx` コンテナでそのまま配信できるようにしてあります。
 
 ## できること
 
+- タスクの追加 / 完了 / 編集 / 削除
+- `localStorage` に保存しつつ、72時間後に自動削除
+- 残り時間表示と TTL バー
+- PWA 用 `manifest.webmanifest` と `service worker`
 - `nginx` で静的ファイルを配信
 - `/healthz` を返してコンテナ監視に対応
 - `index.html`、`sw.js`、`manifest.webmanifest` はキャッシュしない
@@ -40,7 +44,15 @@ GitHub Container Registry、Fly.io、Render、Cloud Run、ECS など、コンテ
 - PWA 関連ファイルは強くキャッシュしない
 - `assets/` は immutable キャッシュで配信
 
+## ファイル構成
+
+- `index.html`: アプリ本体
+- `assets/styles.css`: UI とアニメーション
+- `assets/app.js`: タスク管理ロジック
+- `manifest.webmanifest`, `sw.js`: PWA 用ファイル
+- `Dockerfile`, `nginx.conf`, `compose.yaml`: コンテナ実行と配信設定
+
 ## 補足
 
-今の時点ではアプリ本体の静的ファイルがまだ揃っていないため、Dockerfile はフォールバックページでも起動できるようにしてあります。  
-`index.html` や `assets/` などが追加されると、自動的にそれらを配信します。
+Dockerfile にはフォールバックページ生成も残してありますが、現在のリポジトリでは `index.html` と `assets/` を優先してそのまま配信します。  
+静的フロントなので、Docker を使わず GitHub Pages や Cloudflare Pages へ置くこともできます。

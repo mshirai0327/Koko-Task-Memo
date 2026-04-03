@@ -1,0 +1,18 @@
+{
+  "name": "Koko-Task",
+  "short_name": "Koko-Task",
+  "description": "72時間で消える、軽くて楽しいパーソナルToDoアプリ",
+  "lang": "ja",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0F0E17",
+  "theme_color": "#0F0E17",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

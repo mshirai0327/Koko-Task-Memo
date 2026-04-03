@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Koko-Task | 72時間で消えるToDo</title>
+    <meta
+      name="description"
+      content="72時間で消える、軽くて楽しいパーソナルToDoアプリ Koko-Task"
+    />
+    <meta name="theme-color" content="#0F0E17" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="glow glow--one" aria-hidden="true"></div>
+    <div class="glow glow--two" aria-hidden="true"></div>
+    <div class="glow glow--three" aria-hidden="true"></div>
+
+    <main class="app-shell">
+      <section class="hero reveal">
+        <p class="eyebrow">かるく置いておく</p>
+        <h1 class="brand">Koko-Task</h1>
+        <p class="hero-copy">
+          72時間でふっと消える、管理しすぎないためのタスクメモ。
+        </p>
+        <div class="hero-pills" aria-label="アプリの特徴">
+          <span class="pill">72時間で消える</span>
+          <span class="pill">この端末にだけ保存</span>
+          <span class="pill">さわって気持ちいい</span>
+        </div>
+      </section>
+
+      <section class="composer reveal reveal-delay">
+        <form class="composer-form" id="task-form" novalidate>
+          <label class="sr-only" for="task-input">新しいタスク</label>
+          <input
+            id="task-input"
+            class="task-input"
+            type="text"
+            maxlength="120"
+            placeholder="いま気になっていることを、ひとつだけ"
+            autocomplete="off"
+            enterkeyhint="done"
+          />
+          <button class="add-button" type="submit" aria-label="タスクを追加">
+            <span aria-hidden="true">+</span>
+          </button>
+        </form>
+        <div class="composer-meta">
+          <p class="helper-copy">
+            Enter でも追加。終わっても、忘れても、72時間で消えます。
+          </p>
+          <p class="char-counter" id="char-counter">0 / 120</p>
+        </div>
+      </section>
+
+      <section class="panel reveal reveal-delay-2">
+        <div class="section-head">
+          <div>
+            <p class="section-label">いま</p>
+            <h2>のこっていること</h2>
+          </div>
+          <p class="section-meta" id="active-count">0 tasks</p>
+        </div>
+        <div class="task-list" id="active-list" aria-live="polite"></div>
+        <div class="empty-state" id="active-empty">
+          <div class="empty-state__orb" aria-hidden="true"></div>
+          <p class="empty-state__title">いまは空っぽ。</p>
+          <p class="empty-state__copy">
+            小さなメモを置いておくと、ちょうどよく気が楽になります。
+          </p>
+        </div>
+      </section>
+
+      <section class="panel panel--done reveal reveal-delay-3">
+        <div class="section-head">
+          <div>
+            <p class="section-label">おわった</p>
+            <h2>そっと置いておく</h2>
+          </div>
+          <p class="section-meta" id="done-count">0 done</p>
+        </div>
+        <div class="task-list task-list--done" id="done-list"></div>
+        <p class="done-empty" id="done-empty">
+          ここには、終わったものが静かに並びます。
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer reveal reveal-delay-3">
+      <p>軽くてよい。忘れてもよい。</p>
+    </footer>
+
+    <template id="task-template">
+      <article class="task-card" data-task-id="">
+        <div class="task-card__row">
+          <button
+            class="task-card__toggle"
+            type="button"
+            aria-label="タスクの完了状態を切り替える"
+          >
+            <span class="task-card__toggle-mark" aria-hidden="true"></span>
+          </button>
+          <div class="task-card__content">
+            <div class="task-card__meta">
+              <p class="task-card__stamp">たった今</p>
+              <p class="task-card__ttl" aria-label="残り時間">72h 00m</p>
+            </div>
+            <p
+              class="task-card__text"
+              contenteditable="true"
+              role="textbox"
+              aria-label="タスクのテキストを編集"
+              spellcheck="false"
+            ></p>
+          </div>
+          <button
+            class="task-card__delete"
+            type="button"
+            aria-label="タスクを削除"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="task-card__meter" aria-hidden="true">
+          <div class="task-card__meter-fill"></div>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="./assets/app.js"></script>
+  </body>
+</html>

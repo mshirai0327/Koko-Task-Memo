@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Koko-Task icon">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8906" />
+      <stop offset="100%" stop-color="#E53170" />
+    </linearGradient>
+    <linearGradient id="note" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFE" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#F0DCD1" stop-opacity="0.92" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="132" fill="#0F0E17" />
+  <rect x="46" y="46" width="420" height="420" rx="120" fill="url(#bg)" opacity="0.18" />
+  <path
+    d="M128 112c0-17.673 14.327-32 32-32h149.49c8.487 0 16.627 3.372 22.627 9.373l80.51 80.51c6.001 6 9.373 14.14 9.373 22.627V352c0 44.183-35.817 80-80 80H160c-17.673 0-32-14.327-32-32V112Z"
+    fill="url(#note)"
+  />
+  <path d="M311 82v82c0 17.673 14.327 32 32 32h82" fill="#FFE5D0" />
+  <circle cx="178" cy="196" r="18" fill="#FF8906" />
+  <path d="M217 196h125" stroke="#242136" stroke-width="18" stroke-linecap="round" />
+  <circle cx="178" cy="262" r="18" fill="#3DA9FC" />
+  <path d="M217 262h98" stroke="#242136" stroke-width="18" stroke-linecap="round" />
+  <circle cx="178" cy="328" r="18" fill="#2CB67D" />
+  <path d="M217 328h144" stroke="#242136" stroke-width="18" stroke-linecap="round" />
+</svg>
