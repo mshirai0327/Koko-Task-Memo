@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
+.env
+.env.*
+dist/
+build/
+coverage/
+tmp/
+node_modules/
+.codex

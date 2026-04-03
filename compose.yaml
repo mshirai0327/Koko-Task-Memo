@@ -1,0 +1,14 @@
+services:
+  koko-task:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: koko-task:local
+    ports:
+      - "8080:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1/healthz >/dev/null"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
