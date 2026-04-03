@@ -1,7 +1,7 @@
 # Koko-Task
 
 `Koko-Task` は、72時間で消える個人用 ToDo アプリです。  
-依存なしの静的フロントとして実装し、`nginx` コンテナでそのまま配信できるようにしてあります。
+依存なしの静的フロントとして実装してあり、バックエンドなしでそのまま使えます。
 
 ## できること
 
@@ -9,40 +9,44 @@
 - `localStorage` に保存しつつ、72時間後に自動削除
 - 残り時間表示と TTL バー
 - PWA 用 `manifest.webmanifest` と `service worker`
-- `nginx` で静的ファイルを配信
-- `/healthz` を返してコンテナ監視に対応
-- `index.html`、`sw.js`、`manifest.webmanifest` はキャッシュしない
-- `assets/` や一般的な静的アセットは長期キャッシュ
+
+## バックエンドが不要な理由
+
+今回の仕様は、次の条件に収まっているのでフロントだけで成立します。
+
+- 個人利用で、他ユーザーとの共有がない
+- タスク保存先が `localStorage`
+- デバイス間同期が不要
+- 通知や認証が不要
+
+逆に、次の要件が入るならバックエンドが必要です。
+
+- 別のスマホや PC と同期したい
+- ログインしたい
+- 他人と共有したい
+- 通知やリマインダーを送りたい
 
 ## ローカル実行
 
-```bash
-docker compose up --build
-```
+`index.html` をブラウザで開くだけでも動きます。  
+PWA の確認まで含めるなら、簡単な静的サーバーで配信してください。
 
-起動後に以下へアクセスします。
-
-- `http://localhost:8080`
-- `http://localhost:8080/healthz`
-
-## Docker でのビルド
+例:
 
 ```bash
-docker build -t koko-task:local .
+python3 -m http.server 8080
 ```
 
-## デプロイの考え方
+その後 `http://localhost:8080` を開きます。
 
-この構成は「静的ファイルを含む Docker イメージ」をそのまま配る前提です。  
-GitHub Container Registry、Fly.io、Render、Cloud Run、ECS など、コンテナを動かせる環境なら載せ替えやすいです。
+## デプロイ先
 
-本番向けには次を満たします。
+静的ファイルだけで動くので、次のような静的ホスティングにそのまま置けます。
 
-- コンテナは `80` 番で待ち受け
-- `healthz` が生存確認用のエンドポイントになる
-- `index.html` は更新追従しやすいように no-cache
-- PWA 関連ファイルは強くキャッシュしない
-- `assets/` は immutable キャッシュで配信
+- GitHub Pages
+- Cloudflare Pages
+- Netlify
+- Vercel
 
 ## ファイル構成
 
@@ -50,9 +54,8 @@ GitHub Container Registry、Fly.io、Render、Cloud Run、ECS など、コンテ
 - `assets/styles.css`: UI とアニメーション
 - `assets/app.js`: タスク管理ロジック
 - `manifest.webmanifest`, `sw.js`: PWA 用ファイル
-- `Dockerfile`, `nginx.conf`, `compose.yaml`: コンテナ実行と配信設定
 
 ## 補足
 
-Dockerfile にはフォールバックページ生成も残してありますが、現在のリポジトリでは `index.html` と `assets/` を優先してそのまま配信します。  
-静的フロントなので、Docker を使わず GitHub Pages や Cloudflare Pages へ置くこともできます。
+PWA の `service worker` は HTTPS か `localhost` で動かしてください。  
+つまり本番公開は静的ホスティングに置くだけで十分です。
