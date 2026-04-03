@@ -13,6 +13,7 @@
     />
     <meta name="theme-color" content="#0F0E17" />
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-180.png" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,9 +37,12 @@
         </p>
         <div class="hero-pills" aria-label="アプリの特徴">
           <span class="pill">72時間で消える</span>
-          <span class="pill">この端末にだけ保存</span>
+          <span class="pill">コードで端末同期</span>
           <span class="pill">さわって気持ちいい</span>
         </div>
+        <button class="sync-button" id="sync-open" type="button" aria-label="デバイス同期の設定">
+          <span aria-hidden="true">⇄</span> 同期
+        </button>
       </section>
 
       <section class="composer reveal reveal-delay">
@@ -97,6 +101,35 @@
         </p>
       </section>
     </main>
+
+    <div class="sync-modal" id="sync-modal" aria-modal="true" role="dialog" hidden>
+      <div class="sync-modal__backdrop"></div>
+      <div class="sync-modal__panel" aria-labelledby="sync-modal-title">
+        <button class="sync-modal__close" id="sync-close" type="button" aria-label="閉じる">
+          ×
+        </button>
+        <p class="sync-modal__eyebrow">Multi Device</p>
+        <h2 class="sync-modal__title" id="sync-modal-title">別のデバイスで使う</h2>
+        <p class="sync-modal__desc">
+          このコードを別のデバイスで入力すると、72時間のタスクを同じメモとして扱えます。
+        </p>
+        <div class="sync-code" id="sync-code-display">--------</div>
+        <div class="sync-modal__input-row">
+          <input
+            id="sync-code-input"
+            class="sync-code-input"
+            type="text"
+            maxlength="8"
+            placeholder="コードを入力"
+            autocomplete="off"
+            autocapitalize="characters"
+          />
+          <button class="sync-code-submit" id="sync-code-submit" type="button">同期する</button>
+        </div>
+        <p class="sync-modal__feedback" id="sync-feedback" role="status" aria-live="polite"></p>
+        <p class="sync-modal__note">コードは共有しすぎず、大切に扱ってください。</p>
+      </div>
+    </div>
 
     <footer class="site-footer reveal reveal-delay-3">
       <p>軽くてよい。忘れてもよい。</p>
