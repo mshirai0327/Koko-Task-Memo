@@ -48,6 +48,23 @@ python3 -m http.server 8080
 - Netlify
 - Vercel
 
+## GitHub Pages CI
+
+GitHub Pages へ自動デプロイする workflow を [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) に追加しています。
+
+動き:
+
+- `main` に push すると GitHub Actions が起動
+- `index.html`, `assets/`, `manifest.webmanifest`, `sw.js` だけを Pages 用 artifact にまとめる
+- その artifact を GitHub Pages へデプロイ
+
+最初の 1 回だけ、GitHub のリポジトリ設定で次を確認してください。
+
+1. `Settings` → `Pages` を開く
+2. `Build and deployment` の `Source` を `GitHub Actions` にする
+
+このアプリは相対パスで組んでいるので、`https://<user>.github.io/<repo>/` のような project site 配下でもそのまま動きます。
+
 ## ファイル構成
 
 - `index.html`: アプリ本体
